@@ -15,7 +15,7 @@ sshHosts = sys.path[0] + "/hosts"
 def _assert(exp, err):
     if not exp:
         print >>sys.stderr,err
-        sys.exit(1)
+        #sys.exit(1)
 
 def _dedup(ls):
     table = {}
@@ -164,12 +164,11 @@ class SSHGO:
         self.hosts_pool.append(known_hosts)
 
         self.screen = curses.initscr()
-        curses.noecho()
-        curses.cbreak()
+        self.screen.clear()
+        self.screen.border(0)
         curses.curs_set(0)
         self.screen.keypad(1)
-        self.screen.border(0)
-
+        curses.cbreak()
         self.top_line_number = 0
         self.highlight_line_number = 0
         self.search_keyword = None
@@ -195,7 +194,6 @@ class SSHGO:
         #black bg
         curses.init_pair(6, curses.COLOR_BLACK, curses.COLOR_BLACK)
         self.COLOR_BBG = 6
-
         self.run()
 
     def run(self):
@@ -452,6 +450,7 @@ class SSHGO:
     # catch any weird termination situations
     def __del__(self):
         self.restore_screen()
+        print 'wrong'
 
 
 if __name__ == '__main__':
@@ -467,5 +466,8 @@ if __name__ == '__main__':
         print >>sys.stderr,'hosts is not found, create it'
         fp = open(host_file, 'w')
         fp.close()
-
-    sshgo = SSHGO(host_file)
+    try: 
+        sshgo = SSHGO(host_file)
+    except Exception,e:
+        print "exception:", e
+    
