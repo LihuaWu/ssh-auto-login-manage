@@ -16,4 +16,4 @@ if [ $4 ]; then
     password=$4
 fi
 
-./auto_login.exp $host $port $user $password
+TERM=xterm ./auto_login.exp $host $port $user $password
